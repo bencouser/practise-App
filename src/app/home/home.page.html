@@ -1,20 +1,36 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      {{title}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-searchbar Placeholder="Search Pokemon" (ionChange)="onSearch($event)"></ion-searchbar>
+    <ion-list> 
+      <div *ngIf="filteredResults.length > 0; else noResults">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+      <ion-row *ngFor="let pokemon of filteredResults">
+
+        <ion-col>
+          <ion-item>
+              <ion-label>{{pokemon.name}}</ion-label>
+              <ion-button (click)="onClick(pokemon.url)">Select</ion-button> 
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <div *ngIf="pokemonDetails && pokemonDetails.species.name === pokemon.name">
+            <img [src]="pokemonDetails.sprites.front_default">
+          </div>
+        </ion-col>
+      </ion-row> 
+      </div>
+    </ion-list>
+    
+    <ng-template #noResults>
+      <ion-item>
+      There are no Pokemon by that name.
+      </ion-item>
+    </ng-template>
 </ion-content>
